@@ -7,6 +7,6 @@ https://nbviewer.jupyter.org/
 
 For example, one can copy the link of the RWG_Bowtie notebook and add to viewer to open
 
-https://nbviewer.jupyter.org/github/Khainguyen1349/MoMPython_KN/blob/main/RWG_Bowtie_v2.ipynb
+https://nbviewer.jupyter.org/github/Khainguyen1349/MoMPython_KN/blob/main/RWG_Bowtie_v3_mesh.ipynb
 
 Have fun!
