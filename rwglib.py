@@ -307,3 +307,53 @@ def radiating2DFields(ObservationPointList,antenna_moment,K,eta_):
     return np.array(U_efield3), np.array(W_efield3)
 
     
+def calculateImpedance(f,c_,mu_,epsilon_,p,mesh,moment,FeedPoint):
+    omega       =2*np.pi*f                                        
+    k           =omega/c_
+    K           =1j*k
+    Constant1   =mu_/(4*np.pi)
+    Constant2   =1/(1j*4*np.pi*omega*epsilon_)
+    Factor      =1/9
+    FactorA     =Factor*(1j*omega*mesh.EdgeLength/4)*Constant1
+    FactorFi    =Factor*mesh.EdgeLength*Constant2
+    FactorA = FactorA[np.newaxis].T
+    FactorFi = FactorFi[np.newaxis].T
+
+    Distance = np.zeros((3,mesh.EdgesTotal))
+    for m in range(mesh.EdgesTotal):
+        Distance[:,m]=(0.5*np.sum(p[:,mesh.Edge_[:,m]],axis=1)[np.newaxis].T-FeedPoint).reshape(3)
+        
+    np.sum(Distance*Distance,axis=0).shape
+
+    INDEX=np.argsort(np.sum(Distance*Distance,axis=0),kind='mergesort') 
+    Index = INDEX[0]               #Center feed - dipole
+    #Index=INDEX[0:1]              #Probe feed - monopole
+
+    V = np.zeros (mesh.EdgesTotal)
+    V[Index]=1*mesh.EdgeLength[Index]
+        
+    Z = impmet(mesh,K,moment,FactorA,FactorFi)
+    I=solve(Z, V)
+    GapCurrent  =np.sum(I[Index]*mesh.EdgeLength[Index].T)
+    GapVoltage  =np.mean(V[Index]/mesh.EdgeLength[Index])
+    Impedance   =GapVoltage/GapCurrent
+    FeedPower   =1/2*np.real(GapCurrent*np.conj(GapVoltage))
+    return Z, I, Impedance, FeedPower
+
+def currentDistribution(t,mesh,moment,I):
+    Index_ = [i for i in range(mesh.TrianglesTotal) if t[3,i] < 2]
+    Triangles = len(Index_)
+    CurrentNorm = []
+    for k in range(Triangles):
+        i = np.zeros(3)
+        for m in range(mesh.EdgesTotal):
+            IE = I[m]*mesh.EdgeLength[m]
+            if(mesh.TrianglePlus[m] == k):
+                i = i + IE*moment.RHO_Plus[:,m]/(2*mesh.Area[mesh.TrianglePlus[m]])
+            if(mesh.TriangleMinus[m] == k):
+                i = i + IE*moment.RHO_Minus[:,m]/(2*mesh.Area[mesh.TriangleMinus[m]])
+        CurrentNorm.append(abs(np.linalg.norm(i)))
+
+    CurrentNorm = np.array(CurrentNorm)
+    print("Current vector's size",CurrentNorm.shape)
+    return CurrentNorm
