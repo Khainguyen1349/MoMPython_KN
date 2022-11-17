@@ -59,8 +59,9 @@ def extentHull(tri_origine,hull_bound_points_ext,mesh_resolution_ext,commonEdge)
     olPP2 = overlappedPointsPosition(mesh_ini,olP2)
     # delete these nex overlapped points
     mesh_ini_del = np.delete(mesh_ini, olPP2, 0)
-    # add the ovelapped points in the original tri 
-    mesh_ini = np.append(olP,mesh_ini_del, axis=0)
+    # add the ovelapped points in the original tri
+    if len(olPP2) > 0:
+        mesh_ini = np.append(olP,mesh_ini_del, axis=0)
     # check if inside hull
     mesh_add = np.array([p_ for p_ in mesh_ini if hull_bound_ext.find_simplex(p_)>=0])
     # the extended tri
