@@ -5,9 +5,9 @@ As the Jupiter notebooks have some dynamic figures, it is suggested to check the
 
 https://nbviewer.jupyter.org/
 
-For example, one can copy the link of the RWG_Bowtie notebook and add to viewer to open
+For example, one can copy the link of the RWG_IFA notebook and add to viewer to open
 
-https://nbviewer.jupyter.org/github/Khainguyen1349/MoMPython_KN/blob/main/RWG_Bowtie_v3_mesh.ipynb
+https://nbviewer.org/github/Khainguyen1349/MoMPython_KN/blob/main/RWG_IFA.ipynb
 
 A final version of the simulator caculate the impedance of a Yagi antenna which functions at 1Ghz and show it pattern
 
