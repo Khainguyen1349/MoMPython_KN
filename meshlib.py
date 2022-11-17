@@ -6,6 +6,13 @@ class Delaunay_temp:
     def __init__(self,points,simplices):
         self.points = points
         self.simplices = simplices
+    def deletePoint(self,del_point):
+        self.points = np.delete(self.points,del_point,0)
+        self.simplices = np.delete(self.simplices,np.where(self.simplices == del_point)[0],0)
+        for i in range(self.simplices.shape[0]):
+            for j in range(3):
+                if self.simplices[i,j] >= del_point:
+                    self.simplices[i,j] -= 1
 
 def creatHull(hull_bound_points,mesh_resolution):
     hull_bound = Delaunay(hull_bound_points)
@@ -16,7 +23,7 @@ def creatHull(hull_bound_points,mesh_resolution):
     mesh_ini = np.array(mesh_points)
     mesh = np.array([p_ for p_ in mesh_ini if hull_bound.find_simplex(p_)>=0]) #check if points are inside hull bound
     tri = Delaunay(mesh)
-    return tri
+    return Delaunay_temp(tri.points,tri.simplices)
 
 def overlappedPoints(points, edgecommon):
     oPoints = []
