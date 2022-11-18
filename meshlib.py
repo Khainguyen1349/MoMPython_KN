@@ -49,6 +49,7 @@ def extentHull(tri_origine,hull_bound_points_ext,mesh_resolution_ext,commonEdge)
     
     # find overlapped point on tri_original
     olP = overlappedPoints(tri_origine.points, commonEdge)
+##    print(olP)
     # find the positions of the ovelapped points
     olPP = overlappedPointsPosition(tri_origine.points,olP)
     # creat hull
