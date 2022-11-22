@@ -15,7 +15,7 @@ The same simulation for a Yagi antenna which functions at 1Ghz:
 
 https://nbviewer.org/github/Khainguyen1349/MoMPython_KN/blob/main/RWG_Yagi_1GHz.ipynb
 
-A version where the Charateristic Modes of a conductive plate is analyzed is found in
+A version where the Charateristic Modes of a conductive plate is analyzed and found in
 
 https://nbviewer.org/github/Khainguyen1349/MoMPython_KN/blob/main/RWG_CharacteristicMode_2.ipynb
 
