@@ -1,6 +1,10 @@
 from scipy.linalg import solve
 import numpy as np
 import numpy.matlib
+import matplotlib.pyplot as plt
+from matplotlib import cm, colors
+import plotly.figure_factory as ff
+
 
 ##IMPMET Standard impedance matrix (metal surface)
 ##Returns the complex impedance matrix
@@ -357,3 +361,45 @@ def currentDistribution(t,mesh,moment,I):
     CurrentNorm = np.array(CurrentNorm)
     print("Current vector's size",CurrentNorm.shape)
     return CurrentNorm
+
+def Pattern3D(Theta, Phi, FF_3D):
+    X = FF_3D * np.sin(Theta) * np.cos(Phi)
+    Y = FF_3D * np.sin(Theta) * np.sin(Phi)
+    Z = FF_3D * np.cos(Theta)
+    
+    fig = plt.figure()
+
+    ax = fig.add_subplot(1,1,1, projection='3d')
+    ax.grid(True)
+    ax.axis('on')
+    ax.set_xticks([])
+    ax.set_yticks([])
+    ax.set_zticks([])
+
+    N_ = np.sqrt(X**2 + Y**2 + Z**2)
+    Rmax = np.max(N_)
+    N_ = N_/Rmax
+
+    axes_length = 1.5
+    ax.plot([0, axes_length*Rmax], [0, 0], [0, 0], linewidth=2, color='red')
+    ax.plot([0, 0], [0, axes_length*Rmax], [0, 0], linewidth=2, color='green')
+    ax.plot([0, 0], [0, 0], [0, axes_length*Rmax], linewidth=2, color='blue')
+
+    mycol = cm.jet(N_)
+
+    surf = ax.plot_surface(X, Y, Z, rstride=1, cstride=1, facecolors=mycol, linewidth=0.5, antialiased=True, shade=False)  # , alpha=0.5, zorder = 0.5)
+
+    ax.set_xlim([-axes_length*Rmax, axes_length*Rmax])
+    ax.set_ylim([-axes_length*Rmax, axes_length*Rmax])
+    ax.set_zlim([-axes_length*Rmax, axes_length*Rmax])
+
+    m = cm.ScalarMappable(cmap=cm.jet)
+    m.set_array(FF_3D)
+    ax.set_xlabel('X')
+    ax.set_ylabel('Y')
+    ax.set_zlabel('Z')
+
+    fig.colorbar(m, shrink=0.8)
+    ax.view_init(azim=300, elev=30)
+
+    plt.show()
