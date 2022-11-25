@@ -129,3 +129,13 @@ def closeLoopHull(tri_origine,hull_bound_points_ext,mesh_resolution_ext,commonEd
     tri_final_simplices = np.concatenate((tri_origine.simplices, tri_ext_simplices), axis=0)
     
     return Delaunay_temp(tri_final_points,tri_final_simplices)
+
+def addSeparatedShapes(tri1, tri2):
+    tri_final_points = np.concatenate((tri1.points, tri2.points), axis=0)
+    tri_final_simplices = np.concatenate((tri1.simplices, tri2.simplices + tri1.simplices.shape[0]), axis=0)
+    return Delaunay_temp(tri_final_points,tri_final_simplices)
+
+
+
+
+    
