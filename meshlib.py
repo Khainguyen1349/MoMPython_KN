@@ -4,8 +4,8 @@ from scipy.spatial import Delaunay#, ConvexHull
 
 class Delaunay_temp:
     def __init__(self,points,simplices):
-        self.points = points
-        self.simplices = simplices
+        self.points = points #(number_of_points,3)
+        self.simplices = simplices #(number_of_triangles,3)
     def deletePoint(self,del_point):
         self.points = np.delete(self.points,del_point,0)
         self.simplices = np.delete(self.simplices,np.where(self.simplices == del_point)[0],0)
@@ -129,3 +129,33 @@ def closeLoopHull(tri_origine,hull_bound_points_ext,mesh_resolution_ext,commonEd
     tri_final_simplices = np.concatenate((tri_origine.simplices, tri_ext_simplices), axis=0)
     
     return Delaunay_temp(tri_final_points,tri_final_simplices)
+
+def addSeparatedShapes(tri1, tri2):
+    tri_final_points = np.concatenate((tri1.points, tri2.points), axis=0)
+    #print("size of simplices",tri1.simplices.shape)
+    tri_final_simplices = np.concatenate((tri1.simplices, tri2.simplices + tri1.points.shape[0]), axis=0)
+    return Delaunay_temp(tri_final_points,tri_final_simplices)
+
+def to3D(tri2D,scale,rotX,rotY,rotZ,dX,dY,dZ):
+    #rotX,rotY,rotZ in radiant
+    translate = np.array([[dX,dY,dZ]])
+    
+    RotX = np.array([[1,0,0],
+                     [0,np.cos(rotX),-np.sin(rotX)],
+                     [0,np.sin(rotX),np.cos(rotX)]])
+    RotY = np.array([[np.cos(rotY),0,np.sin(rotY)],
+                     [0,1,0],
+                     [-np.sin(rotY),0,np.cos(rotY)]])
+    RotZ = np.array([[np.cos(rotZ),-np.sin(rotZ),0],
+                     [np.sin(rotZ),np.cos(rotZ),0],
+                     [0,0,1]])
+    perm = np.matmul(np.matmul(RotX,RotY),RotZ)
+
+    tri3D = tri2D
+    points = np.zeros((3,tri3D.points.shape[0]))
+    points[0:2,:] = tri3D.points.T*scale
+    tri3D.points = (np.matmul(points.T,perm) + translate)
+    return tri3D
+
+
+    
