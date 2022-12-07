@@ -136,6 +136,21 @@ def addSeparatedShapes(tri1, tri2):
     tri_final_simplices = np.concatenate((tri1.simplices, tri2.simplices + tri1.points.shape[0]), axis=0)
     return Delaunay_temp(tri_final_points,tri_final_simplices)
 
+def mirror2DShapes(tri,axis,line):
+    ## only accept that the original shape on the positive side of the mirroring axis
+    if axis == "X":
+        if min(tri.points[0,:]) > line:
+            return addSeparatedShapes(tri, Delaunay_temp(tri.points*np.array([[-1],[1]]) + np.array([[2*line],[0]]),tri.simplices))
+        elif min(tri.points[0,:]) == line:
+            print("Error!")
+            return tri
+    else:
+        if min(tri.points[1,:]) > line:
+            return addSeparatedShapes(tri, Delaunay_temp(tri.points*np.array([[1],[-1]]) + np.array([[0],[2*line]]),tri.simplices))
+        elif min(tri.points[1,:]) == line:
+            print("Error!")
+            return tri
+
 def to3D(tri2D,scaleX,scaleY,rotX,rotY,rotZ,dX,dY,dZ):
     #rotX,rotY,rotZ in radiant
     translate = np.array([[dX,dY,dZ]])
