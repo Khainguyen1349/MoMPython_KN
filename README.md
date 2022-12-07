@@ -5,17 +5,21 @@ As the Jupiter notebooks have some dynamic figures, it is suggested to check the
 
 https://nbviewer.jupyter.org/
 
-For example, one can copy the link of the RWG_IFA notebook and add to viewer to open
+* For example, one can copy the link of the RWG_IFA notebook and add to viewer to open
 
 https://nbviewer.org/github/Khainguyen1349/MoMPython_KN/blob/main/RWG_IFA.ipynb
 
 A second version with denser mesh is also presented in the project.
 
-The same simulation for a Yagi antenna which functions at 1Ghz:
+* Lumped components on a Dipole antenna @700MHz:
+
+https://nbviewer.org/github/Khainguyen1349/MoMPython_KN/blob/main/RWG_Dipole_75MHz_wLumpedElement.ipynb
+
+* Simulation for a Yagi antenna which functions at 1Ghz:
 
 https://nbviewer.org/github/Khainguyen1349/MoMPython_KN/blob/main/RWG_Yagi_1GHz.ipynb
 
-A version where the Charateristic Modes of a conductive plate is analyzed and found in
+* Analysis of Charateristic Modes of a conductive plate:
 
 https://nbviewer.org/github/Khainguyen1349/MoMPython_KN/blob/main/RWG_CharacteristicMode_2.ipynb
 

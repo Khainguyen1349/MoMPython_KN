@@ -136,9 +136,10 @@ def addSeparatedShapes(tri1, tri2):
     tri_final_simplices = np.concatenate((tri1.simplices, tri2.simplices + tri1.points.shape[0]), axis=0)
     return Delaunay_temp(tri_final_points,tri_final_simplices)
 
-def to3D(tri2D,scale,rotX,rotY,rotZ,dX,dY,dZ):
+def to3D(tri2D,scaleX,scaleY,rotX,rotY,rotZ,dX,dY,dZ):
     #rotX,rotY,rotZ in radiant
     translate = np.array([[dX,dY,dZ]])
+    scale = np.array([[scaleX,scaleY]]).T
     
     RotX = np.array([[1,0,0],
                      [0,np.cos(rotX),-np.sin(rotX)],

@@ -16,7 +16,7 @@ import plotly.figure_factory as ff
 def impmet(rwgmesh,K,moment,FactorA,FactorFi):
     # Memory allocation
     Z   = np.zeros ((rwgmesh.EdgesTotal,rwgmesh.EdgesTotal))+1j*np.zeros((rwgmesh.EdgesTotal,rwgmesh.EdgesTotal)) 
-    print("Impedance matrice's size: ",Z.shape)
+    #print("Impedance matrice's size: ",Z.shape)
     # Loop over integration triangles
     for p_ in range(rwgmesh.TrianglesTotal):
         Plus  = [i for i,j in enumerate(np.array(rwgmesh.TrianglePlus)-p_) if j == 0]
@@ -337,6 +337,71 @@ def calculateImpedance(f,c_,mu_,epsilon_,p,mesh,moment,FeedPoint):
     V[Index]=1*mesh.EdgeLength[Index]
         
     Z = impmet(mesh,K,moment,FactorA,FactorFi)
+    I=solve(Z, V)
+    GapCurrent  =np.sum(I[Index]*mesh.EdgeLength[Index].T)
+    GapVoltage  =np.mean(V[Index]/mesh.EdgeLength[Index])
+    Impedance   =GapVoltage/GapCurrent
+    FeedPower   =1/2*np.real(GapCurrent*np.conj(GapVoltage))
+    return Z, I, Impedance, FeedPower
+
+def calculateImpedance_withLumped(f,c_,mu_,epsilon_,p,mesh,moment,FeedPoint,LNumber,LoadPoint,LoadValue,LoadDir):
+    omega       =2*np.pi*f                                        
+    k           =omega/c_
+    K           =1j*k
+    Constant1   =mu_/(4*np.pi)
+    Constant2   =1/(1j*4*np.pi*omega*epsilon_)
+    Factor      =1/9
+    FactorA     =Factor*(1j*omega*mesh.EdgeLength/4)*Constant1
+    FactorFi    =Factor*mesh.EdgeLength*Constant2
+    FactorA = FactorA[np.newaxis].T
+    FactorFi = FactorFi[np.newaxis].T
+
+    Distance = np.zeros((3,mesh.EdgesTotal))
+    for m in range(mesh.EdgesTotal):
+        Distance[:,m]=(0.5*np.sum(p[:,mesh.Edge_[:,m]],axis=1)[np.newaxis].T-FeedPoint).reshape(3)
+        
+    #print("Check:",np.sum(Distance*Distance,axis=0).shape)
+
+    INDEX=np.argsort(np.sum(Distance*Distance,axis=0),kind='mergesort') 
+    Index = INDEX[0]               #Center feed - dipole
+    #Index=INDEX[0:1]              #Probe feed - monopole
+
+    V = np.zeros (mesh.EdgesTotal)
+    V[Index]=1*mesh.EdgeLength[Index]
+        
+    Z = impmet(mesh,K,moment,FactorA,FactorFi)
+#______________________Lumped handler_________________________
+    DeltaZ = np.zeros([LNumber,1],dtype = 'complex_')
+    for k in range(LNumber):
+        DeltaZ[k] = 1j*2*np.pi*f*LoadValue[0,k] + 1/(1j*2*np.pi*f*LoadValue[1,k]) + LoadValue[2,k]
+
+    #print(DeltaZ)
+    L=0
+    for k in range(LNumber): 
+        Dist = np.zeros((mesh.EdgesTotal,1))
+        Orien = np.zeros((mesh.EdgesTotal,1))
+        for m in range(mesh.EdgesTotal):   
+            n1 = mesh.Edge_[0,m]
+            n2 = mesh.Edge_[1,m]
+            Dist[m]     = np.linalg.norm(0.5*np.sum(p[:,mesh.Edge_[:,m]],axis=1)-LoadPoint[:,k])
+            EdgeVector  =(p[:,n1]-p[:,n2])/mesh.EdgeLength[m];
+            Orien[m]   =np.abs(np.dot(EdgeVector,LoadDir[:,k]));
+
+        #print("Check2:",np.sum(Dist*Dist,axis=1).shape)
+        INDEX1 = np.argsort(np.sum(Dist*Dist,axis=1),kind='mergesort')
+        #print("Dist:",Dist)
+        #print("INDEX1:",INDEX1)
+        for n in range(mesh.EdgesTotal):
+            Index1  =INDEX1[n]
+            q       =Orien[Index1]
+            if(q < 0.001):
+                #print(q)
+                L = L+1
+                #ImpArray[L]=Index1
+                break
+        Z[Index1,Index1]=Z[Index1,Index1]+(mesh.EdgeLength[Index1]**2)*DeltaZ[k]
+#______________________Lumped handler_________________________
+        
     I=solve(Z, V)
     GapCurrent  =np.sum(I[Index]*mesh.EdgeLength[Index].T)
     GapVoltage  =np.mean(V[Index]/mesh.EdgeLength[Index])
