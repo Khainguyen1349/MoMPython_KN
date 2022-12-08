@@ -11,9 +11,13 @@ https://nbviewer.org/github/Khainguyen1349/MoMPython_KN/blob/main/RWG_IFA.ipynb
 
 A second version with denser mesh is also presented in the project.
 
-* Lumped components on a Dipole antenna @700MHz:
+* Lumped components analysis on a Dipole antenna @75MHz:
 
 https://nbviewer.org/github/Khainguyen1349/MoMPython_KN/blob/main/RWG_Dipole_75MHz_wLumpedElement.ipynb
+
+* Directivity improvement with lumped components:
+
+https://nbviewer.org/github/Khainguyen1349/MoMPython_KN/blob/main/RWG_Directivity_Optim_withLumped.ipynb
 
 * Simulation for a Yagi antenna which functions at 1Ghz:
 
