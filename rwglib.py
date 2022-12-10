@@ -15,7 +15,7 @@ import plotly.figure_factory as ff
 
 def impmet(rwgmesh,K,moment,FactorA,FactorFi):
     # Memory allocation
-    Z   = np.zeros ((rwgmesh.EdgesTotal,rwgmesh.EdgesTotal))+1j*np.zeros((rwgmesh.EdgesTotal,rwgmesh.EdgesTotal)) 
+    Z   = np.zeros ([rwgmesh.EdgesTotal,rwgmesh.EdgesTotal],dtype = 'complex_') 
     #print("Impedance matrice's size: ",Z.shape)
     # Loop over integration triangles
     for p_ in range(rwgmesh.TrianglesTotal):
@@ -47,6 +47,79 @@ def impmet(rwgmesh,K,moment,FactorA,FactorFi):
             Z1= FactorA*A.T
             Z[:,n]=Z[:,n] + (rwgmesh.EdgeLength[n]*(Z1-ZF)).reshape(rwgmesh.EdgesTotal)
     return Z
+
+
+## Modified impmet function to calculate Quality-Factor of an geometry
+def stored(rwgmesh,K,moment,FsA,FsF,FactorA,FactorFi):
+    # Memory allocation
+    Z   = np.zeros ([rwgmesh.EdgesTotal,rwgmesh.EdgesTotal],dtype = 'complex_')
+    ZJ   = np.zeros ([rwgmesh.EdgesTotal,rwgmesh.EdgesTotal],dtype = 'complex_')
+    Zrho   = np.zeros ([rwgmesh.EdgesTotal,rwgmesh.EdgesTotal],dtype = 'complex_')
+    ZsJ   = np.zeros ([rwgmesh.EdgesTotal,rwgmesh.EdgesTotal],dtype = 'complex_')
+    Zsrho   = np.zeros ([rwgmesh.EdgesTotal,rwgmesh.EdgesTotal],dtype = 'complex_')
+    #print("Impedance matrice's size: ",Z.shape)
+    # Loop over integration triangles
+    for p_ in range(rwgmesh.TrianglesTotal):
+        Plus  = [i for i,j in enumerate(np.array(rwgmesh.TrianglePlus)-p_) if j == 0]
+        Minus  = [i for i,j in enumerate(np.array(rwgmesh.TriangleMinus)-p_) if j == 0]
+
+        D = moment.Center_ - np.transpose(np.tile([rwgmesh.Center[:,p_]],(rwgmesh.TrianglesTotal,9,1))) #[3 9 TrianglesTotal]     
+
+        R=np.sqrt(sum(D*D))[np.newaxis]                              #[1 9 TrianglesTotal]
+        g=np.exp(-K*R)/R                                #[1 9 TrianglesTotal]
+        s=np.sin(np.imag(K)*R)
+
+        gP=g[:,:,rwgmesh.TrianglePlus]                         #[1 9 EdgesTotal]
+        gM=g[:,:,rwgmesh.TriangleMinus]                        #[1 9 EdgesTotal]
+        sP=s[:,:,rwgmesh.TrianglePlus]                         #[1 9 EdgesTotal]
+        sM=s[:,:,rwgmesh.TriangleMinus]                        #[1 9 EdgesTotal]
+
+        Fi= (np.sum(gP,axis = 1) - np.sum(gM,axis = 1))#[1 1 EdgesTotal]
+        ZF= FactorFi*Fi.T         #[EdgesTotal 1]
+        Fsi= (np.sum(sP,axis = 1) - np.sum(sM,axis = 1))#[1 1 EdgesTotal]
+        ZsF= FsF*Fsi.T         #[EdgesTotal 1]
+
+        for n in Plus:
+            #n = Plus[k]
+            RP = np.tile([moment.RHO__Plus[:,:,n]],(rwgmesh.EdgesTotal,1,1)).transpose(1,2,0)  #[3 9 EdgesTotal]
+            A=(np.sum(gP*np.sum(RP*moment.RHO_P,axis=0),axis=1)+np.sum(gM*np.sum(RP*moment.RHO_M,axis=0),axis=1))
+            Z1= FactorA*A.T
+            ZJ[:,n]=ZJ[:,n] + (rwgmesh.EdgeLength[n]*Z1).reshape(rwgmesh.EdgesTotal)
+            Zrho[:,n]=Zrho[:,n] + (rwgmesh.EdgeLength[n]*ZF).reshape(rwgmesh.EdgesTotal)
+##            Z[:,n]=Z[:,n] + (rwgmesh.EdgeLength[n]*(Z1+ZF)).reshape(rwgmesh.EdgesTotal)
+
+            As=(np.sum(sP*np.sum(RP*moment.RHO_P,axis=0),axis=1)+np.sum(sM*np.sum(RP*moment.RHO_M,axis=0),axis=1))
+            Zs1= FsA*As.T
+            ZsJ[:,n]=ZsJ[:,n] + (rwgmesh.EdgeLength[n]*Zs1).reshape(rwgmesh.EdgesTotal)
+            Zsrho[:,n]=Zsrho[:,n] + (rwgmesh.EdgeLength[n]*ZsF).reshape(rwgmesh.EdgesTotal)
+
+        for n in Minus:
+            #n = Minus[k]
+            RP = np.tile([moment.RHO__Minus[:,:,n]],(rwgmesh.EdgesTotal,1,1)).transpose(1,2,0)  #[3 9 EdgesTotal]
+            A=(np.sum(gP*np.sum(RP*moment.RHO_P,axis=0),axis=1)+np.sum(gM*np.sum(RP*moment.RHO_M,axis=0),axis=1))
+            Z1= FactorA*A.T
+            ZJ[:,n]=ZJ[:,n] + (rwgmesh.EdgeLength[n]*Z1).reshape(rwgmesh.EdgesTotal)
+            Zrho[:,n]=Zrho[:,n] + (rwgmesh.EdgeLength[n]*(-ZF)).reshape(rwgmesh.EdgesTotal)
+
+            As=(np.sum(sP*np.sum(RP*moment.RHO_P,axis=0),axis=1)+np.sum(sM*np.sum(RP*moment.RHO_M,axis=0),axis=1))
+            Zs1= FsA*As.T
+            ZsJ[:,n]=ZsJ[:,n] + (rwgmesh.EdgeLength[n]*Zs1).reshape(rwgmesh.EdgesTotal)
+            Zsrho[:,n]=Zsrho[:,n] + (rwgmesh.EdgeLength[n]*(-ZsF)).reshape(rwgmesh.EdgesTotal)
+
+    Z = ZJ + Zrho
+    Xem = Zsrho + ZsJ
+    R1 = np.real(Z)
+    Xe = -np.imag(Zrho)
+    Xm = np.imag(ZJ)
+    Xe = Xe + Xem
+    Xm = Xm + Xem
+
+    # Improve accuracy
+    Xe = (Xe + Xe.T)/2;
+    Xm = (Xm + Xm.T)/2;
+    R1 = (R1 + R1.T)/2;
+
+    return Z, Xe, Xm, R1
 
 ##RWG1: Geometry calculations - all Chapters
 ##Uses the structure mesh file, e.g. platefine.mat, as an input.
@@ -343,6 +416,45 @@ def calculateImpedance(f,c_,mu_,epsilon_,p,mesh,moment,FeedPoint):
     Impedance   =GapVoltage/GapCurrent
     FeedPower   =1/2*np.real(GapCurrent*np.conj(GapVoltage))
     return Z, I, Impedance, FeedPower
+
+def calculateImpedance_QFactor(f,c_,mu_,epsilon_,p,mesh,moment,FeedPoint):
+    omega       =2*np.pi*f                                        
+    k           =omega/c_
+    K           =1j*k
+    eta_        =np.sqrt(mu_/epsilon_) 
+    Constant1   =mu_/(4*np.pi)
+    Constant2   =1/(1j*4*np.pi*omega*epsilon_)
+    Factor      =1/9
+    FactorA     =Factor*(1j*omega*mesh.EdgeLength/4)*Constant1
+    FactorFi    =Factor*mesh.EdgeLength*Constant2
+    FactorA = FactorA[np.newaxis].T
+    FactorFi = FactorFi[np.newaxis].T
+
+    FsA=-(1/2)*eta_*k**2/(4*np.pi)*mesh.EdgeLength.T/4*Factor;
+    FsF=(1/2)*eta_/(4*np.pi)*mesh.EdgeLength.T*Factor;
+    FsA = FsA[np.newaxis].T
+    FsF = FsF[np.newaxis].T
+
+    Distance = np.zeros((3,mesh.EdgesTotal))
+    for m in range(mesh.EdgesTotal):
+        Distance[:,m]=(0.5*np.sum(p[:,mesh.Edge_[:,m]],axis=1)[np.newaxis].T-FeedPoint).reshape(3)
+        
+    np.sum(Distance*Distance,axis=0).shape
+
+    INDEX=np.argsort(np.sum(Distance*Distance,axis=0),kind='mergesort') 
+    Index = INDEX[0]               #Center feed - dipole
+    #Index=INDEX[0:1]              #Probe feed - monopole
+
+    V = np.zeros (mesh.EdgesTotal)
+    V[Index]=1*mesh.EdgeLength[Index]
+        
+    Z, Xe, Xm, R1 = stored(mesh,K,moment,FsA,FsF,FactorA,FactorFi)
+    I=solve(Z, V)
+    GapCurrent  =np.sum(I[Index]*mesh.EdgeLength[Index].T)
+    GapVoltage  =np.mean(V[Index]/mesh.EdgeLength[Index])
+    Impedance   =GapVoltage/GapCurrent
+    FeedPower   =1/2*np.real(GapCurrent*np.conj(GapVoltage))
+    return Z, Xe, Xm, R1, I, Impedance, FeedPower
 
 def calculateImpedance_withLumped(f,c_,mu_,epsilon_,p,mesh,moment,FeedPoint,LNumber,LoadPoint,LoadValue,LoadDir):
     omega       =2*np.pi*f                                        
