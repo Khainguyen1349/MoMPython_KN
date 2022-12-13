@@ -1,5 +1,5 @@
 # MoMPython_KN
-Try to translate Matlab code from Makarov book into python
+Try to translate Matlab code from Makarov book into python and then play with antenna designs and analysis.
 
 As the Jupiter notebooks have some dynamic figures, it is suggested to check the notbook with
 
