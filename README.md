@@ -1,7 +1,7 @@
 # MoMPython_KN
 Try to translate Matlab code from Makarov book into python and then play with antenna designs and analysis.
 
-As the Jupiter notebooks have some dynamic figures, it is suggested to check the notbook with
+As the Jupiter notebooks have some dynamic figures, it is suggested to check the notebook with
 
 https://nbviewer.jupyter.org/
 
@@ -14,7 +14,7 @@ https://nbviewer.org/github/Khainguyen1349/MoMPython_KN/blob/main/RWG_Bowtie.ipy
 This is the earliest version of the simulator where one can still find the generation of the antenna mesh, calculation of the RWG basis functions, and the analysis of the antenna performances. Later on, those calculations are placed in libraries [meshlib.py](./meshlib.py) and [rwglib.py](./rwglib.py) for the sake of clarity.
 ______________________________________________________________________________________
 
-* Simulation of an (Planar) Inverted-F Antenna
+* Simulation of a (Planar) Inverted-F Antenna
 
 https://nbviewer.org/github/Khainguyen1349/MoMPython_KN/blob/main/RWG_IFA.ipynb
 
