@@ -7,7 +7,14 @@ https://nbviewer.jupyter.org/
 
 ______________________________________________________________________________________
 
-* For example, one can copy the link of the RWG_IFA notebook and add to viewer to open
+* For example, one can copy the link of the RWG_Bowtie notebook and add to viewer to open
+
+https://nbviewer.org/github/Khainguyen1349/MoMPython_KN/blob/main/RWG_Bowtie.ipynb
+
+This is the earliest version of the simulator where one can still the generation of the antenna mesh, calculation of the RWG basis functions, and the analysis of the antenna performances. Later on, those calculations are placed in libraries [meshlib.py](./meshlib.py) and [rwglib.py](./rwglib.py)
+______________________________________________________________________________________
+
+* Simulation of an (Planar) Inverted-F Antenna
 
 https://nbviewer.org/github/Khainguyen1349/MoMPython_KN/blob/main/RWG_IFA.ipynb
 
@@ -30,7 +37,7 @@ https://nbviewer.org/github/Khainguyen1349/MoMPython_KN/blob/main/RWG_Directivit
 ______________________________________________________________________________________
 
 
-* Simulation for a Yagi antenna which functions at 1Ghz:
+* Simulation for a Yagi antenna functioning at 1Ghz:
 
 https://nbviewer.org/github/Khainguyen1349/MoMPython_KN/blob/main/RWG_Yagi_1GHz.ipynb
 
@@ -50,5 +57,14 @@ ________________________________________________________________________________
 
 https://nbviewer.org/github/Khainguyen1349/MoMPython_KN/blob/main/RWG_QualityFactor_868MHz.ipynb
 
+______________________________________________________________________________________
 
-Have fun!
+
+* I have also tried to simulate a Meta-surface:
+
+https://nbviewer.org/github/Khainguyen1349/MoMPython_KN/blob/main/RWG_Yagi_Reflector_1GHz.ipynb
+
+but, well, I failed! It seems that MoM is not a good method to simulate a large sparse structures :D
+
+
+Anyway have fun trying to simulate your antenna!
