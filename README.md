@@ -41,6 +41,7 @@ ________________________________________________________________________________
 https://nbviewer.org/github/Khainguyen1349/MoMPython_KN/blob/main/RWG_Directivity_Optim_withLumped.ipynb
 
 <img src="https://github.com/Khainguyen1349/MoMPython_KN/blob/main/figures/DirOpt.png" width=40% height=40%>
+
 ______________________________________________________________________________________
 
 
@@ -49,6 +50,7 @@ ________________________________________________________________________________
 https://nbviewer.org/github/Khainguyen1349/MoMPython_KN/blob/main/RWG_Yagi_1GHz.ipynb
 
 <img src="https://github.com/Khainguyen1349/MoMPython_KN/blob/main/figures/Yagi.png" width=40% height=40%>
+
 ______________________________________________________________________________________
 
 
@@ -82,6 +84,7 @@ ________________________________________________________________________________
 https://nbviewer.org/github/Khainguyen1349/MoMPython_KN/blob/main/RWG_QualityFactor_868MHz.ipynb
 
 <img src="https://github.com/Khainguyen1349/MoMPython_KN/blob/main/figures/QF.png" width=40% height=40%>
+
 ______________________________________________________________________________________
 
 
