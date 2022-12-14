@@ -11,7 +11,7 @@ ________________________________________________________________________________
 
 https://nbviewer.org/github/Khainguyen1349/MoMPython_KN/blob/main/RWG_Bowtie.ipynb
 
-![plot](./figures/Bowtie.png)
+<img src="https://github.com/Khainguyen1349/MoMPython_KN/blob/main/figures/Bowtie.png" width=40% height=40%>
 
 This is the earliest version of the simulator where one can still find the generation of the antenna mesh, calculation of the RWG basis functions, and the analysis of the antenna performances. Later on, those calculations are placed in libraries [meshlib.py](./meshlib.py) and [rwglib.py](./rwglib.py) for the sake of clarity.
 ______________________________________________________________________________________
@@ -20,7 +20,7 @@ ________________________________________________________________________________
 
 https://nbviewer.org/github/Khainguyen1349/MoMPython_KN/blob/main/RWG_IFA.ipynb
 
-![plot](./figures/IFA.png)
+<img src="https://github.com/Khainguyen1349/MoMPython_KN/blob/main/figures/IFA.png" width=40% height=40%>
 
 A second version with denser mesh is also presented in the project.
 
@@ -31,7 +31,7 @@ ________________________________________________________________________________
 
 https://nbviewer.org/github/Khainguyen1349/MoMPython_KN/blob/main/RWG_Dipole_75MHz_wLumpedElement.ipynb
 
-![plot](./figures/Dipole.png)
+<img src="https://github.com/Khainguyen1349/MoMPython_KN/blob/main/figures/Dipole.png" width=40% height=40%>
 
 ______________________________________________________________________________________
 
@@ -40,8 +40,7 @@ ________________________________________________________________________________
 
 https://nbviewer.org/github/Khainguyen1349/MoMPython_KN/blob/main/RWG_Directivity_Optim_withLumped.ipynb
 
-![plot](./figures/DirOpt.png)
-
+<img src="https://github.com/Khainguyen1349/MoMPython_KN/blob/main/figures/DirOpt.png" width=40% height=40%>
 ______________________________________________________________________________________
 
 
@@ -49,7 +48,7 @@ ________________________________________________________________________________
 
 https://nbviewer.org/github/Khainguyen1349/MoMPython_KN/blob/main/RWG_Yagi_1GHz.ipynb
 
-![plot](./figures/Yagi.png)
+<img src="https://github.com/Khainguyen1349/MoMPython_KN/blob/main/figures/Yagi.png" width=40% height=40%>
 ______________________________________________________________________________________
 
 
@@ -59,7 +58,7 @@ https://nbviewer.org/github/Khainguyen1349/MoMPython_KN/blob/main/RWG_Characteri
 
 Surface currents of 1st Mode
 
-![plot](./figures/CM1.png)
+<img src="https://github.com/Khainguyen1349/MoMPython_KN/blob/main/figures/CM1.png" width=40% height=40%>
 
 and its radiation pattern corresponding
 
@@ -67,7 +66,7 @@ and its radiation pattern corresponding
 
 Surface currents of 2nd Mode
 
-![plot](./figures/CM2.png)
+<img src="https://github.com/Khainguyen1349/MoMPython_KN/blob/main/figures/CM2.png" width=40% height=40%>
 
 and its radiation pattern corresponding
 
@@ -82,7 +81,7 @@ ________________________________________________________________________________
 
 https://nbviewer.org/github/Khainguyen1349/MoMPython_KN/blob/main/RWG_QualityFactor_868MHz.ipynb
 
-![plot](./figures/QF.png)
+<img src="https://github.com/Khainguyen1349/MoMPython_KN/blob/main/figures/QF.png" width=40% height=40%>
 ______________________________________________________________________________________
 
 
