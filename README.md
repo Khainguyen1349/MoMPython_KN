@@ -58,13 +58,19 @@ ________________________________________________________________________________
 https://nbviewer.org/github/Khainguyen1349/MoMPython_KN/blob/main/RWG_CharacteristicModes.ipynb
 
 Surface currents of 1st Mode
+
 ![plot](./figures/CM1.png)
+
 and its radiation pattern corresponding
+
 ![plot](./figures/CM2_pattern.png)
 
 Surface currents of 2nd Mode
+
 ![plot](./figures/CM2.png)
+
 and its radiation pattern corresponding
+
 ![plot](./figures/CM2_pattern.png)
 
 The surface currents and radiation pattern associated are very useful for certain types of design, e.g. Capacitive Coupling Element design for mobile terminals, etc. The generalize eigenvalues problem is solved thank to the work of Benyamin Ghojogh.
