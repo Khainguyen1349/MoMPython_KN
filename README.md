@@ -11,12 +11,16 @@ ________________________________________________________________________________
 
 https://nbviewer.org/github/Khainguyen1349/MoMPython_KN/blob/main/RWG_Bowtie.ipynb
 
+![plot](./figures/Bowtie.png)
+
 This is the earliest version of the simulator where one can still find the generation of the antenna mesh, calculation of the RWG basis functions, and the analysis of the antenna performances. Later on, those calculations are placed in libraries [meshlib.py](./meshlib.py) and [rwglib.py](./rwglib.py) for the sake of clarity.
 ______________________________________________________________________________________
 
 * Simulation of a (Planar) Inverted-F Antenna
 
 https://nbviewer.org/github/Khainguyen1349/MoMPython_KN/blob/main/RWG_IFA.ipynb
+
+![plot](./figures/IFA.png)
 
 A second version with denser mesh is also presented in the project.
 
@@ -27,12 +31,16 @@ ________________________________________________________________________________
 
 https://nbviewer.org/github/Khainguyen1349/MoMPython_KN/blob/main/RWG_Dipole_75MHz_wLumpedElement.ipynb
 
+![plot](./figures/Dipole.png)
+
 ______________________________________________________________________________________
 
 
 * Directivity improvement with lumped components:
 
 https://nbviewer.org/github/Khainguyen1349/MoMPython_KN/blob/main/RWG_Directivity_Optim_withLumped.ipynb
+
+![plot](./figures/DirOpt.png)
 
 ______________________________________________________________________________________
 
@@ -41,12 +49,23 @@ ________________________________________________________________________________
 
 https://nbviewer.org/github/Khainguyen1349/MoMPython_KN/blob/main/RWG_Yagi_1GHz.ipynb
 
+![plot](./figures/Yagi.png)
 ______________________________________________________________________________________
 
 
 * Analysis of Charateristic Modes of a conductive plate:
 
 https://nbviewer.org/github/Khainguyen1349/MoMPython_KN/blob/main/RWG_CharacteristicModes.ipynb
+
+Surface currents of 1st Mode
+![plot](./figures/CM1.png)
+and its radiation pattern corresponding
+![plot](./figures/CM2_pattern.png)
+
+Surface currents of 2nd Mode
+![plot](./figures/CM2.png)
+and its radiation pattern corresponding
+![plot](./figures/CM2_pattern.png)
 
 The surface currents and radiation pattern associated are very useful for certain types of design, e.g. Capacitive Coupling Element design for mobile terminals, etc. The generalize eigenvalues problem is solved thank to the work of Benyamin Ghojogh.
 
@@ -57,6 +76,7 @@ ________________________________________________________________________________
 
 https://nbviewer.org/github/Khainguyen1349/MoMPython_KN/blob/main/RWG_QualityFactor_868MHz.ipynb
 
+![plot](./figures/QF.png)
 ______________________________________________________________________________________
 
 
