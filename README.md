@@ -63,7 +63,7 @@ Surface currents of 1st Mode
 
 and its radiation pattern corresponding
 
-![plot](./figures/CM2_pattern.png)
+![plot](./figures/CM1_pattern.png)
 
 Surface currents of 2nd Mode
 
