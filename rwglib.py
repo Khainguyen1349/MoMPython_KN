@@ -383,6 +383,29 @@ def radiating2DFields(ObservationPointList,antenna_moment,K,eta_):
         U_efield3.append(np.linalg.norm(ObservationPoint)**2*np.linalg.norm(Poynting_efield3))
     return np.array(U_efield3), np.array(W_efield3)
 
+def radiatingFields_atObservationPoint(ObservationPoint,antenna_moment,K,eta_): 
+    #print("Observation Point: ",ObservationPoint)
+    r = np.matlib.repmat(ObservationPoint,antenna_moment.DipoleCenter.shape[1],1).T  - antenna_moment.DipoleCenter
+    #print(r)
+    PointRM = np.matlib.repmat(np.sqrt(np.sum(r*r,axis = 0)),3,1)
+    #print(PointRM)
+    EXP = np.exp(-K*PointRM)
+    #print(EXP)
+    PointRM2 = PointRM**2
+    C = (1/PointRM2)*(1 + 1/(K*PointRM))
+    D_ = np.matlib.repmat(np.sum(r*antenna_moment.DipoleMoment,axis = 0),3,1)/PointRM2
+    M = D_*r
+    HField = K/4/np.pi*np.cross(antenna_moment.DipoleMoment.T,r.T).T*C*EXP
+    HField = np.sum(HField,axis=1)
+    #print(HField)
+    EField = eta_/4/np.pi*((M - antenna_moment.DipoleMoment)*(K/PointRM + C) + 2*M*C)*EXP
+    EField = np.sum(EField,axis=1)
+    #print(EField)
+    Poynting = np.reshape(0.5*np.real(np.cross(EField,np.conj(HField))),(1,3))
+    W_efield = np.linalg.norm(Poynting)
+    U_efield = np.linalg.norm(ObservationPoint)**2*np.linalg.norm(Poynting)
+    return U_efield, W_efield, Poynting, EField,HField
+
     
 def calculateImpedance(f,c_,mu_,epsilon_,p,mesh,moment,FeedPoint):
     omega       =2*np.pi*f                                        
