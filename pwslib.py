@@ -32,9 +32,9 @@ def spectral(E,Nspec,k0):
     sE.Z = KZ
     sE.N = Nspec
     
-    sE.DX = np.fft.fftshift(np.fft.fft2(np.fft.ifftshift(E.DX)))
-    sE.DY = np.fft.fftshift(np.fft.fft2(np.fft.ifftshift(E.DY)))
-    sE.DZ = np.fft.fftshift(np.fft.fft2(np.fft.ifftshift(E.DZ)))
+    sE.DX = np.fft.fftshift(np.fft.fft2(np.fft.ifftshift(E.DX),[Nspec,Nspec]))
+    sE.DY = np.fft.fftshift(np.fft.fft2(np.fft.ifftshift(E.DY),[Nspec,Nspec]))
+    sE.DZ = np.fft.fftshift(np.fft.fft2(np.fft.ifftshift(E.DZ),[Nspec,Nspec]))
     sE.D = np.swapaxes(np.stack([sE.DX, sE.DY, sE.DZ],axis=1),1,2)
     return sE
 
@@ -51,9 +51,9 @@ def propagation(E,Z,Nspec,k0):
     E_propagated = deepcopy(E)
     E_propagated.Z = E.Z
         #Matlab : E_rec.D = ifft2(propagateur.*fft2(E_anal.D));
-    E_propagated.DX = np.fft.ifft2(np.multiply(propagator,np.fft.fft2(E.DX)))
-    E_propagated.DY = np.fft.ifft2(np.multiply(propagator,np.fft.fft2(E.DY)))
-    E_propagated.DZ = np.fft.ifft2(np.multiply(propagator,np.fft.fft2(E.DZ)))
+    E_propagated.DX = np.fft.ifft2(np.multiply(propagator,np.fft.fft2(E.DX,[Nspec,Nspec])),[E.N,E.N])
+    E_propagated.DY = np.fft.ifft2(np.multiply(propagator,np.fft.fft2(E.DY,[Nspec,Nspec])),[E.N,E.N])
+    E_propagated.DZ = np.fft.ifft2(np.multiply(propagator,np.fft.fft2(E.DZ,[Nspec,Nspec])),[E.N,E.N])
     E_propagated.D = np.swapaxes(np.stack([E_propagated.DX, E_propagated.DY, E_propagated.DZ],axis=1),1,2)
     return E_propagated
 
