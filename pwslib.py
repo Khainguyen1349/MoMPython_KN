@@ -31,10 +31,23 @@ def spectral(E,Nspec,k0):
     sE.Y = KY
     sE.Z = KZ
     sE.N = Nspec
-    
-    sE.DX = np.fft.fftshift(np.fft.fft2(np.fft.ifftshift(E.DX),[Nspec,Nspec]))
-    sE.DY = np.fft.fftshift(np.fft.fft2(np.fft.ifftshift(E.DY),[Nspec,Nspec]))
-    sE.DZ = np.fft.fftshift(np.fft.fft2(np.fft.ifftshift(E.DZ),[Nspec,Nspec]))
+    if Nspec == E.N: 
+        sE.DX = np.fft.fftshift(np.fft.fft2(np.fft.ifftshift(E.DX)))
+        sE.DY = np.fft.fftshift(np.fft.fft2(np.fft.ifftshift(E.DY)))
+        sE.DZ = np.fft.fftshift(np.fft.fft2(np.fft.ifftshift(E.DZ)))
+    elif Nspec > E.N:
+##        Zero padding
+        start = int((Nspec - E.N)/2)
+        stop = start + E.N
+        E_DX = np.zeros((Nspec,Nspec),dtype=complex)
+        E_DX[start:stop,start:stop] = E.DX
+        E_DY = np.zeros((Nspec,Nspec),dtype=complex)
+        E_DY[start:stop,start:stop] = E.DY
+        E_DZ = np.zeros((Nspec,Nspec),dtype=complex)
+        E_DZ[start:stop,start:stop] = E.DZ
+        sE.DX = np.fft.fftshift(np.fft.fft2(np.fft.ifftshift(E_DX)))
+        sE.DY = np.fft.fftshift(np.fft.fft2(np.fft.ifftshift(E_DY)))
+        sE.DZ = np.fft.fftshift(np.fft.fft2(np.fft.ifftshift(E_DZ)))
     sE.D = np.swapaxes(np.stack([sE.DX, sE.DY, sE.DZ],axis=1),1,2)
     return sE
 
