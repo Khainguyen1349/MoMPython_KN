@@ -70,17 +70,18 @@ def propagation(E,Z,Nspec,k0):
     E_propagated.D = np.swapaxes(np.stack([E_propagated.DX, E_propagated.DY, E_propagated.DZ],axis=1),1,2)
     return E_propagated
 
-def displayE(E) :
+def displayField(E) :
     fig, axs = plt.subplots(3, 2)
-    axs[0, 0].pcolormesh(E.X,E.Y,abs(E.DX),shading='auto')
-    axs[0, 0].set_title('X-Y-Z component - magnitude')
+    ax0 = axs[0, 0].pcolormesh(E.X,E.Y,abs(E.DX),shading='auto')
+    #plt.colorbar(ax0,ax=A2)
+    axs[0, 0].set_title('Magnitude')
     axs[0, 1].pcolormesh(E.X,E.Y,np.angle(E.DX),shading='auto')
-    axs[0, 1].set_title('X-Y-Z component - phase')
+    axs[0, 1].set_title('Phase')
     
-    axs[1, 0].pcolormesh(E.X,E.Y,abs(E.DY),shading='auto')
+    ax1 = axs[1, 0].pcolormesh(E.X,E.Y,abs(E.DY),shading='auto')
     axs[1, 1].pcolormesh(E.X,E.Y,np.angle(E.DY),shading='auto')
     
-    axs[2, 0].pcolormesh(E.X,E.Y,abs(E.DZ),shading='auto')
+    ax2 = axs[2, 0].pcolormesh(E.X,E.Y,abs(E.DZ),shading='auto')
     axs[2, 1].pcolormesh(E.X,E.Y,np.angle(E.DZ),shading='auto')
     
     for ax in axs.flat:
@@ -89,3 +90,7 @@ def displayE(E) :
     # Hide x labels and tick labels for top plots and y ticks for right plots.
     for ax in axs.flat:
         ax.label_outer()
+        
+    fig.colorbar(ax0, ax = axs[0, 0])
+    fig.colorbar(ax1, ax = axs[1, 0])
+    fig.colorbar(ax2, ax = axs[2, 0])
