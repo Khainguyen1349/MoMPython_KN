@@ -4,8 +4,9 @@ import matplotlib.pyplot as plt
 #from matplotlib import cm, colors
 from copy import deepcopy
 from scipy import interpolate
+from scipy import signal
 
-
+plt.style.use('classic')
 
 class field:
     def __init__(self,E_field,X,Y,z,Npoints,k0,omega,eps_0,eps_c):
@@ -21,8 +22,10 @@ class field:
 def spectral(E,Nspec,k0):
     dx = E.X[0,1] - E.X[0,0]
     dy = E.Y[1,0] - E.Y[0,0]
-    kx = (-1/2 + (np.arange(Nspec))/Nspec)*(2*np.pi/dx)
-    ky = (-1/2 + (np.arange(Nspec))/Nspec)*(2*np.pi/dy)
+    kx = 2*np.pi*np.fft.fftshift(np.fft.fftfreq(E.N, d=dx))
+    ky = 2*np.pi*np.fft.fftshift(np.fft.fftfreq(E.N, d=dy))
+##    kx = (-1/2 + (np.arange(Nspec))/Nspec)*(2*np.pi/dx)
+##    ky = (-1/2 + (np.arange(Nspec))/Nspec)*(2*np.pi/dy)
     KX,KY = np.meshgrid(kx,ky)
     KZ = np.conj(np.sqrt((k0**2-KX**2-KY**2)*(1+0j)))
         
@@ -51,38 +54,63 @@ def spectral(E,Nspec,k0):
     sE.D = np.swapaxes(np.stack([sE.DX, sE.DY, sE.DZ],axis=1),1,2)
     return sE
 
+##def propagation(E,Z,Nspec,k0):
+##    dx = E.X[0,1] - E.X[0,0]
+##    dy = E.Y[1,0] - E.Y[0,0]
+##    kx = 2*np.pi*np.fft.fftshift(np.fft.fftfreq(E.N, d=dx))
+##    ky = 2*np.pi*np.fft.fftshift(np.fft.fftfreq(E.N, d=dy))
+####    kx = (-1/2 + (np.arange(Nspec))/Nspec)*(2*np.pi/dx)
+####    ky = (-1/2 + (np.arange(Nspec))/Nspec)*(2*np.pi/dy)
+##    KX,KY = np.meshgrid(kx,ky)
+##    KZ = np.conj(np.sqrt((k0**2-KX**2-KY**2)*(1+0j)))
+##
+##    propagator = np.fft.ifftshift(np.exp(-1j*(Z-E.Z)*KZ))
+##        
+##    E_propagated = deepcopy(E)
+##    E_propagated.Z = E.Z
+##        #Matlab : E_rec.D = ifft2(propagateur.*fft2(E_anal.D));
+##    E_propagated.DX = np.fft.ifft2(np.multiply(propagator,np.fft.fft2(E.DX,[Nspec,Nspec])),[E.N,E.N])
+##    E_propagated.DY = np.fft.ifft2(np.multiply(propagator,np.fft.fft2(E.DY,[Nspec,Nspec])),[E.N,E.N])
+##    E_propagated.DZ = np.fft.ifft2(np.multiply(propagator,np.fft.fft2(E.DZ,[Nspec,Nspec])),[E.N,E.N])
+##    E_propagated.D = np.swapaxes(np.stack([E_propagated.DX, E_propagated.DY, E_propagated.DZ],axis=1),1,2)
+##    return E_propagated
+
 def propagation(E,Z,Nspec,k0):
     dx = E.X[0,1] - E.X[0,0]
     dy = E.Y[1,0] - E.Y[0,0]
-    kx = (-1/2 + (np.arange(Nspec))/Nspec)*(2*np.pi/dx)
-    ky = (-1/2 + (np.arange(Nspec))/Nspec)*(2*np.pi/dy)
+    kx = 2*np.pi*np.fft.fftshift(np.fft.fftfreq(E.N, d=dx))
+    ky = 2*np.pi*np.fft.fftshift(np.fft.fftfreq(E.N, d=dy))
+##    kx = (-1/2 + (np.arange(Nspec))/Nspec)*(2*np.pi/dx)
+##    ky = (-1/2 + (np.arange(Nspec))/Nspec)*(2*np.pi/dy)
     KX,KY = np.meshgrid(kx,ky)
     KZ = np.conj(np.sqrt((k0**2-KX**2-KY**2)*(1+0j)))
+
+    window1d = signal.tukey(E.N,alpha=0.8)
+    window2d = np.sqrt(np.outer(window1d,window1d))
 
     propagator = np.fft.ifftshift(np.exp(-1j*(Z-E.Z)*KZ))
         
     E_propagated = deepcopy(E)
     E_propagated.Z = E.Z
         #Matlab : E_rec.D = ifft2(propagateur.*fft2(E_anal.D));
-    E_propagated.DX = np.fft.ifft2(np.multiply(propagator,np.fft.fft2(E.DX,[Nspec,Nspec])),[E.N,E.N])
-    E_propagated.DY = np.fft.ifft2(np.multiply(propagator,np.fft.fft2(E.DY,[Nspec,Nspec])),[E.N,E.N])
-    E_propagated.DZ = np.fft.ifft2(np.multiply(propagator,np.fft.fft2(E.DZ,[Nspec,Nspec])),[E.N,E.N])
+    E_propagated.DX = np.fft.ifft2(np.multiply(propagator,np.fft.fft2(E.DX,[Nspec,Nspec])),[E.N,E.N])*window2d
+    E_propagated.DY = np.fft.ifft2(np.multiply(propagator,np.fft.fft2(E.DY,[Nspec,Nspec])),[E.N,E.N])*window2d
+    E_propagated.DZ = np.fft.ifft2(np.multiply(propagator,np.fft.fft2(E.DZ,[Nspec,Nspec])),[E.N,E.N])*window2d
     E_propagated.D = np.swapaxes(np.stack([E_propagated.DX, E_propagated.DY, E_propagated.DZ],axis=1),1,2)
     return E_propagated
 
 def displayField(E) :
     fig, axs = plt.subplots(3, 2)
-    ax0 = axs[0, 0].pcolormesh(E.X,E.Y,abs(E.DX),shading='auto')
-    #plt.colorbar(ax0,ax=A2)
+    ax0 = axs[0, 0].pcolormesh(E.X,E.Y,abs(E.DX), shading='auto')
     axs[0, 0].set_title('Magnitude')
-    axs[0, 1].pcolormesh(E.X,E.Y,np.angle(E.DX),shading='auto')
+    axs[0, 1].pcolormesh(E.X,E.Y,np.angle(E.DX), shading='auto')
     axs[0, 1].set_title('Phase')
     
-    ax1 = axs[1, 0].pcolormesh(E.X,E.Y,abs(E.DY),shading='auto')
-    axs[1, 1].pcolormesh(E.X,E.Y,np.angle(E.DY),shading='auto')
+    ax1 = axs[1, 0].pcolormesh(E.X,E.Y,abs(E.DY), shading='auto')
+    axs[1, 1].pcolormesh(E.X,E.Y,np.angle(E.DY), shading='auto')
     
-    ax2 = axs[2, 0].pcolormesh(E.X,E.Y,abs(E.DZ),shading='auto')
-    axs[2, 1].pcolormesh(E.X,E.Y,np.angle(E.DZ),shading='auto')
+    ax2 = axs[2, 0].pcolormesh(E.X,E.Y,abs(E.DZ), shading='auto')
+    axs[2, 1].pcolormesh(E.X,E.Y,np.angle(E.DZ), shading='auto')
     
     for ax in axs.flat:
         ax.set(xlabel='x-axis', ylabel='y-axis')
