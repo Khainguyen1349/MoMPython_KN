@@ -14,6 +14,7 @@ https://nbviewer.org/github/Khainguyen1349/MoMPython_KN/blob/main/RWG_Bowtie.ipy
 <img src="https://github.com/Khainguyen1349/MoMPython_KN/blob/main/figures/Bowtie.png" width=40% height=40%>
 
 This is the earliest version of the simulator where one can still find the generation of the antenna mesh, calculation of the RWG basis functions, and the analysis of the antenna performances. Later on, those calculations are placed in libraries [meshlib.py](./meshlib.py) and [rwglib.py](./rwglib.py) for the sake of clarity.
+
 ______________________________________________________________________________________
 
 * Simulation of a (Planar) Inverted-F Antenna
@@ -33,14 +34,29 @@ https://nbviewer.org/github/Khainguyen1349/MoMPython_KN/blob/main/RWG_Dipole_75M
 
 <img src="https://github.com/Khainguyen1349/MoMPython_KN/blob/main/figures/Dipole.png" width=40% height=40%>
 
-______________________________________________________________________________________
+The omnidirectional pattern of a typical dipole is found
+ 
+<img src="https://github.com/Khainguyen1349/MoMPython_KN/blob/main/figures/Dipole_75MHz_Pattern.png" width=40% height=40%>
 
+______________________________________________________________________________________
 
 * Directivity improvement with lumped components:
 
 https://nbviewer.org/github/Khainguyen1349/MoMPython_KN/blob/main/RWG_Directivity_Optim_withLumped.ipynb
 
 <img src="https://github.com/Khainguyen1349/MoMPython_KN/blob/main/figures/DirOpt.png" width=40% height=40%>
+
+By adding the lumped components, the impedance of the antenna is modified a bit but not to much. 
+
+<img src="https://github.com/Khainguyen1349/MoMPython_KN/blob/main/figures/DirOpt_S11diff.png">
+
+The radiation pattern of the antenna before adding the lumped components is
+
+<img src="https://github.com/Khainguyen1349/MoMPython_KN/blob/main/figures/DirOpt_beforeAddingLumped.png" width=40% height=40%>
+
+and after adding the components
+
+<img src="https://github.com/Khainguyen1349/MoMPython_KN/blob/main/figures/DirOpt_afterAddingLumped.png" width=40% height=40%>
 
 ______________________________________________________________________________________
 
@@ -51,6 +67,10 @@ https://nbviewer.org/github/Khainguyen1349/MoMPython_KN/blob/main/RWG_Yagi_1GHz.
 
 <img src="https://github.com/Khainguyen1349/MoMPython_KN/blob/main/figures/Yagi.png" width=40% height=40%>
 
+This antenna has more than 7dBi gain and its radiation pattern is as follow
+
+<img src="https://github.com/Khainguyen1349/MoMPython_KN/blob/main/figures/Yagi_1GHz_Pattern.png" width=40% height=40%>
+
 ______________________________________________________________________________________
 
 
@@ -58,21 +78,16 @@ ________________________________________________________________________________
 
 https://nbviewer.org/github/Khainguyen1349/MoMPython_KN/blob/main/RWG_CharacteristicModes.ipynb
 
-Surface currents of 1st Mode
+Surface currents of the first 4 Characteristic Modes
 
-<img src="https://github.com/Khainguyen1349/MoMPython_KN/blob/main/figures/CM1.png" width=40% height=40%>
+| <img src="https://github.com/Khainguyen1349/MoMPython_KN/blob/main/figures/CM1.png" width=40% height=40%>  | <img src="https://github.com/Khainguyen1349/MoMPython_KN/blob/main/figures/CM2.png" width=40% height=40%>  |
+| <img src="https://github.com/Khainguyen1349/MoMPython_KN/blob/main/figures/CM3.png" width=40% height=40%>  | <img src="https://github.com/Khainguyen1349/MoMPython_KN/blob/main/figures/CM4.png" width=40% height=40%>  |
 
-and its radiation pattern corresponding
+and its radiation patterns corresponding
 
-![plot](./figures/CM1_pattern.png)
 
-Surface currents of 2nd Mode
-
-<img src="https://github.com/Khainguyen1349/MoMPython_KN/blob/main/figures/CM2.png" width=40% height=40%>
-
-and its radiation pattern corresponding
-
-![plot](./figures/CM2_pattern.png)
+| <img src="https://github.com/Khainguyen1349/MoMPython_KN/blob/main/figures/CM1_pattern.png" width=40% height=40%>  | <img src="https://github.com/Khainguyen1349/MoMPython_KN/blob/main/figures/CM2_pattern.png" width=40% height=40%>  |
+| <img src="https://github.com/Khainguyen1349/MoMPython_KN/blob/main/figures/CM3_pattern.png" width=40% height=40%>  | <img src="https://github.com/Khainguyen1349/MoMPython_KN/blob/main/figures/CM4_pattern.png" width=40% height=40%>  |
 
 The surface currents and radiation pattern associated are very useful for certain types of design, e.g. Capacitive Coupling Element design for mobile terminals, etc. The generalize eigenvalues problem is solved thank to the work of Benyamin Ghojogh.
 
