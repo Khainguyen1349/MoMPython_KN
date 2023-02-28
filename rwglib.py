@@ -359,6 +359,34 @@ def radiating3DPower(t_sphere,p_sphere,antenna_moment,K,eta_):
         TotalPower = TotalPower + np.linalg.norm(Poynting[:,m])*Area_sphere
     return U, TotalPower
 
+def radiating3DPower_updateSphere(t_sphere,p_sphere,antenna_moment,K,eta_):
+    #TotalPower = 0
+    Poynting = np.zeros(p_sphere.shape)
+    U = np.zeros(p_sphere.shape[1])
+    for m in range(p_sphere.shape[1]):
+        #print(m)
+        #N_ = t_sphere[0:3,m] - 1
+        ObservationPoint = p_sphere[:,m]
+        #print(ObservationPoint)
+        r = np.matlib.repmat(ObservationPoint,antenna_moment.DipoleCenter.shape[1],1).T  - antenna_moment.DipoleCenter
+        #print(r)
+        PointRM = np.matlib.repmat(np.sqrt(np.sum(r*r,axis = 0)),3,1)
+        #print(PointRM)
+        EXP = np.exp(-K*PointRM)
+        #print(EXP)
+        PointRM2 = PointRM**2
+        C = (1/PointRM2)*(1 + 1/(K*PointRM))
+        D_ = np.matlib.repmat(np.sum(r*antenna_moment.DipoleMoment,axis = 0),3,1)/PointRM2
+        M = D_*r
+        HField = K/4/np.pi*np.cross(antenna_moment.DipoleMoment.T,r.T).T*C*EXP
+        #print(HField)
+        EField = eta_/4/np.pi*((M - antenna_moment.DipoleMoment)*(K/PointRM + C) + 2*M*C)*EXP
+        #print(EField)
+        Poynting[:,m] = np.reshape(0.5*np.real(np.cross(np.sum(EField,axis=1),np.conj(np.sum(HField,axis=1)))),(1,3))
+        #print(Poynting[:,m])
+        U[m] = np.linalg.norm(ObservationPoint)**2*np.linalg.norm(Poynting[:,m])
+    return U
+
 def radiating2DFields(ObservationPointList,antenna_moment,K,eta_):
     U_efield3 = []
     W_efield3 = []
