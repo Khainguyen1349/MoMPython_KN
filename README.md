@@ -80,14 +80,14 @@ https://nbviewer.org/github/Khainguyen1349/MoMPython_KN/blob/main/RWG_Characteri
 
 Surface currents of the first 4 Characteristic Modes
 
-| <img src="https://github.com/Khainguyen1349/MoMPython_KN/blob/main/figures/CM1.png" width=40% height=40%>  | <img src="https://github.com/Khainguyen1349/MoMPython_KN/blob/main/figures/CM2.png" width=40% height=40%>  |
-| <img src="https://github.com/Khainguyen1349/MoMPython_KN/blob/main/figures/CM3.png" width=40% height=40%>  | <img src="https://github.com/Khainguyen1349/MoMPython_KN/blob/main/figures/CM4.png" width=40% height=40%>  |
+ <img src="https://github.com/Khainguyen1349/MoMPython_KN/blob/main/figures/CM1.png" width=40% height=40%>   <img src="https://github.com/Khainguyen1349/MoMPython_KN/blob/main/figures/CM2.png" width=40% height=40%>  
+ <img src="https://github.com/Khainguyen1349/MoMPython_KN/blob/main/figures/CM3.png" width=40% height=40%>   <img src="https://github.com/Khainguyen1349/MoMPython_KN/blob/main/figures/CM4.png" width=40% height=40%>  
 
 and its radiation patterns corresponding
 
 
-| <img src="https://github.com/Khainguyen1349/MoMPython_KN/blob/main/figures/CM1_pattern.png" width=40% height=40%>  | <img src="https://github.com/Khainguyen1349/MoMPython_KN/blob/main/figures/CM2_pattern.png" width=40% height=40%>  |
-| <img src="https://github.com/Khainguyen1349/MoMPython_KN/blob/main/figures/CM3_pattern.png" width=40% height=40%>  | <img src="https://github.com/Khainguyen1349/MoMPython_KN/blob/main/figures/CM4_pattern.png" width=40% height=40%>  |
+ <img src="https://github.com/Khainguyen1349/MoMPython_KN/blob/main/figures/CM1_pattern.png" width=40% height=40%>   <img src="https://github.com/Khainguyen1349/MoMPython_KN/blob/main/figures/CM2_pattern.png" width=40% height=40%>  
+ <img src="https://github.com/Khainguyen1349/MoMPython_KN/blob/main/figures/CM3_pattern.png" width=40% height=40%>   <img src="https://github.com/Khainguyen1349/MoMPython_KN/blob/main/figures/CM4_pattern.png" width=40% height=40%>  
 
 The surface currents and radiation pattern associated are very useful for certain types of design, e.g. Capacitive Coupling Element design for mobile terminals, etc. The generalize eigenvalues problem is solved thank to the work of Benyamin Ghojogh.
 
