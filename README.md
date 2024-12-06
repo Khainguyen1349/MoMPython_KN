@@ -1,4 +1,7 @@
-# MoMPython_KN
+# MoMPython_FOY
+
+In this branche, I format the code and make it more modulable
+______________________________________________________________________________________
 Try to translate Matlab code from Makarov book into python and then play with antenna designs and analysis.
 
 As the Jupiter notebooks have some dynamic figures, it is suggested to check the notebook with
